@@ -1,0 +1,21 @@
+[project]
+name = "actividad1-mlops-openrate-equipo01"
+version = "0.1.0"
+description = "Construcción de un mini flujo MLOps para predicción de Open Rate"
+authors = [
+    {name = "Liseth Briceño",email = "dlbricenob@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas (<3.0)",
+    "numpy (>=2.4.6,<3.0.0)",
+    "scikit-learn (>=1.9.0,<2.0.0)",
+    "mlflow (>=3.13.0,<4.0.0)",
+    "dvc (>=3.67.1,<4.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
