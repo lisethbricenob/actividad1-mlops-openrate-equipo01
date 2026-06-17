@@ -1,0 +1,61 @@
+# =============================================================================
+# dvc.yaml — Pipeline reproducible del proyecto Open Rate
+#
+# Ejecutar todo el pipeline:    dvc repro
+# Ejecutar una etapa puntual:   dvc repro <etapa>
+# Visualizar el DAG:            dvc dag
+#
+# DVC re-ejecuta una etapa solo si cambian sus deps, su cmd o sus params.
+# =============================================================================
+
+stages:
+  # ---------------------------------------------------------------------------
+  # Etapa 1 — Generación del dataset mock (Rol 2)
+  # ---------------------------------------------------------------------------
+  generate_data:
+    cmd: >-
+      python src/generate_data.py
+      --n-rows ${data.n_rows}
+      --n-users ${data.n_users}
+      --seed ${data.seed}
+      --output ${data.raw_path}
+    deps:
+      - src/generate_data.py
+    params:
+      - data.n_rows
+      - data.n_users
+      - data.seed
+    outs:
+      - ${data.raw_path}
+
+  # ---------------------------------------------------------------------------
+  # Etapa 2 — Preprocesamiento: one-hot + split train/test (Rol 2)
+  # ---------------------------------------------------------------------------
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+      - src/preprocess.py
+      - ${data.raw_path}
+    params:
+      - preprocess.test_size
+      - preprocess.seed
+      - preprocess.categorical_cols
+    outs:
+      - ${preprocess.processed_dir}/train.csv
+      - ${preprocess.processed_dir}/test.csv
+
+  # ---------------------------------------------------------------------------
+  # Etapa 3 — Entrenamiento y experimentación (Rol 3)
+  # El Rol 3 descomenta y ajusta esta etapa en su rama (feature/model-training)
+  # cuando exista src/train.py con los dos modelos + tracking MLflow.
+  # ---------------------------------------------------------------------------
+  # train:
+  #   cmd: python src/train.py
+  #   deps:
+  #     - src/train.py
+  #     - ${preprocess.processed_dir}/train.csv
+  #     - ${preprocess.processed_dir}/test.csv
+  #   params:
+  #     - train.seed
+  #   outs:
+  #     - ${train.models_dir}

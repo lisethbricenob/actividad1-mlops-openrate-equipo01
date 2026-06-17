@@ -1,0 +1,30 @@
+# =============================================================================
+# params.yaml — Parámetros centralizados del pipeline (DVC los rastrea)
+# Si un parámetro cambia, `dvc repro` re-ejecuta solo las etapas afectadas.
+# =============================================================================
+
+data:
+  n_rows: 35000          # eventos de notificación
+  n_users: 8000          # usuarios únicos
+  seed: 42               # semilla de reproducibilidad
+  raw_path: data/raw/openrate.csv
+
+preprocess:
+  test_size: 0.2         # proporción del conjunto de prueba
+  seed: 42
+  processed_dir: data/processed
+  # Columnas categóricas a codificar (one-hot)
+  categorical_cols:
+    - site
+    - campaign_type
+    - device_os
+    - segment
+  # Columna identificadora (se excluye del entrenamiento)
+  id_col: user_id
+  target_col: target_opened
+
+# Sección reservada para el Rol 3 (modelado y experimentación)
+train:
+  seed: 42
+  models_dir: models
+  # hiperparámetros de los modelos se agregan aquí (logistic_regression, random_forest, etc.)
