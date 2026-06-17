@@ -1,0 +1,49 @@
+schema: '2.0'
+stages:
+  generate_data:
+    cmd: python src/generate_data.py --n-rows 35000 --n-users 8000 --seed 42 
+      --output data/raw/openrate.csv
+    deps:
+    - path: src/generate_data.py
+      hash: md5
+      md5: 01f724abe85ea8fb2cdc66126d11d395
+      size: 7056
+    params:
+      params.yaml:
+        data.n_rows: 35000
+        data.n_users: 8000
+        data.seed: 42
+    outs:
+    - path: data/raw/openrate.csv
+      hash: md5
+      md5: 48351771d0979e46b23bbe5e47ca6e1e
+      size: 2174667
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: data/raw/openrate.csv
+      hash: md5
+      md5: 48351771d0979e46b23bbe5e47ca6e1e
+      size: 2174667
+    - path: src/preprocess.py
+      hash: md5
+      md5: cbf0876c2a6ab6d57a173a1f87c813a8
+      size: 2763
+    params:
+      params.yaml:
+        preprocess.categorical_cols:
+        - site
+        - campaign_type
+        - device_os
+        - segment
+        preprocess.seed: 42
+        preprocess.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 7104a7f98b29a854630ca03699464145
+      size: 365157
+    - path: data/processed/train.csv
+      hash: md5
+      md5: b91621565f7e7c0bed60fde3e769ebad
+      size: 1459434
