@@ -49,13 +49,14 @@ stages:
   # El Rol 3 descomenta y ajusta esta etapa en su rama (feature/model-training)
   # cuando exista src/train.py con los dos modelos + tracking MLflow.
   # ---------------------------------------------------------------------------
-  # train:
-  #   cmd: python src/train.py
-  #   deps:
-  #     - src/train.py
-  #     - ${preprocess.processed_dir}/train.csv
-  #     - ${preprocess.processed_dir}/test.csv
-  #   params:
-  #     - train.seed
-  #   outs:
-  #     - ${train.models_dir}
+  train:
+     cmd: python src/train.py
+     deps:
+       - src/train.py
+       - ${preprocess.processed_dir}/train.csv
+       - ${preprocess.processed_dir}/test.csv
+     params:
+       - train.seed
+     outs:
+      - models/best_model.pkl
+      - models/metrics.csv
