@@ -84,8 +84,6 @@ def main():
     best_model_name = resultados_df.iloc[0]["model"]
     best_model = modelos[best_model_name]
 
-    best_model.fit(X_train, y_train)
-
     model_path = models_dir / "best_model.pkl"
     metrics_path = models_dir / "metrics.csv"
 
