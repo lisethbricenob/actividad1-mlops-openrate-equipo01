@@ -27,8 +27,8 @@ stages:
       size: 2174667
     - path: src/preprocess.py
       hash: md5
-      md5: cbf0876c2a6ab6d57a173a1f87c813a8
-      size: 2763
+      md5: 0cef5b1001298fd2f77e839263d0591c
+      size: 2847
     params:
       params.yaml:
         preprocess.categorical_cols:
@@ -47,3 +47,30 @@ stages:
       hash: md5
       md5: b91621565f7e7c0bed60fde3e769ebad
       size: 1459434
+  train:
+    cmd: python src/train.py
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 7104a7f98b29a854630ca03699464145
+      size: 365157
+    - path: data/processed/train.csv
+      hash: md5
+      md5: b91621565f7e7c0bed60fde3e769ebad
+      size: 1459434
+    - path: src/train.py
+      hash: md5
+      md5: afce5c57aa13b053674892448a1cf6fe
+      size: 3122
+    params:
+      params.yaml:
+        train.seed: 42
+    outs:
+    - path: models/best_model.pkl
+      hash: md5
+      md5: 26eaad21e8a31d3a818953ff0d76906e
+      size: 1371
+    - path: models/metrics.csv
+      hash: md5
+      md5: f8fba291d7b8dc8f872b89e1ce2bf13c
+      size: 170
