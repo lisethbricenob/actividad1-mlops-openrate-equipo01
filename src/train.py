@@ -2,6 +2,7 @@ from pathlib import Path
 import yaml
 import pandas as pd
 import mlflow
+import mlflow.sklearn
 
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -68,6 +69,7 @@ def main():
             mlflow.log_metric("roc_auc", roc_auc)
             mlflow.log_metric("f1_score", f1)
             mlflow.log_metric("accuracy", accuracy)
+            mlflow.sklearn.log_model(modelo, artifact_path="model")
 
             resultados.append(
                 {
